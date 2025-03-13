@@ -1,0 +1,45 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.player {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+}
+
+.player .capa {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.player .info {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.player .controles {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.player .controles button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.player #progresso {
+    width: 100%;
+    margin-top: 10px;
+}

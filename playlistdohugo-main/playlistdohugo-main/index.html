@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Player de Música</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="player">
+        <img src="capa.jpg" alt="Capa do Álbum" class="capa">
+        <div class="info">
+            <h2 class="titulo">Nome da Música</h2>
+            <p class="artista">Nome do Artista</p>
+        </div>
+        <audio src="musica.mp3" id="audio"></audio>
+        <div class="controles">
+            <button id="anterior">Anterior</button>
+            <button id="play">Play</button>
+            <button id="proxima">Próxima</button>
+            <button id="aleatorio">Aleatório</button>
+        </div>
+        <input type="range" id="progresso" value="0">
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

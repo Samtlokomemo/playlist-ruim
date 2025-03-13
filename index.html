@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist ruim do Hugo</title>
+    <link rel="stylesheet" href="estilos/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<head>
+
+</head>
+<body>
+    <main>
+        <div class="header-main">
+            <img class="capa" src="ouvido_sangrando.jpg" alt="Ouvido sangrando ouvindo música ruim">
+            <div class="texto-header">
+                <h1 class="playlist">PLAYLIST RUIM DO HUGO</h1>
+                <div class="infos">
+                    <p></p>
+                    <p>42 músicas, 2h 18min</p>
+                </div>
+            </div>
+        </div>
+
+        <ul id="lista-musicas">
+
+        </ul>
+    </main>
+    <div id="music-player" class="hidden">
+        <img id="player-capa" src="" alt="Capa da Música" style="width: 50px; margin-right: 10px;">
+        <div id="musica-atual">
+            <p id="titulo-musica">Nenhuma música selecionada</p>
+            <p id="artista-musica">Por favor, selecione uma música</p>
+        </div>
+        <div class="container-botoes">
+            <button id="btn-voltar">
+                <span class="material-icons">skip_previous</span>
+            </button>
+            <button id="btn-pausar">
+                <span class="material-icons">pause</span>
+            </button>
+            <button id="btn-proximo">
+                <span class="material-icons">skip_next</span>
+            </button>
+            <button id="btn-aleatorio">
+                <span class="material-icons">shuffle</span>
+            </button>
+        </div>
+    </div>
+    
+    
+    <script src="script.js"></script>
+</body>
+</html>
