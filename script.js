@@ -1,19 +1,14 @@
+const musicPlayer = document.getElementById('music-player');
+const musicaAtual = document.getElementById('musica-atual');
+const playerCapa = document.getElementById('player-capa');
+const tituloMusica = document.getElementById('titulo-musica');
+const artistaMusica = document.getElementById('artista-musica');
+const btnPausar = document.getElementById('btn-pausar');
+const btnVoltar = document.getElementById('btn-voltar');
+const btnProximo = document.getElementById('btn-proximo');
+const btnAleatorio = document.getElementById('btn-aleatorio');
 const audio = document.getElementById('audio');
-const playBtn = document.getElementById('play');
-const anteriorBtn = document.getElementById('anterior');
-const proximaBtn = document.getElementById('proxima');
-const progresso = document.getElementById('progresso');
-const titulo = document.querySelector('.titulo');
-const artista = document.querySelector('.artista');
-const capa = document.querySelector('.capa');
-
-function embaralharPlaylist(playlist) {
-    for (let i = playlist.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [playlist[i], playlist[j]] = [playlist[j], playlist[i]]; // Troca os elementos
-    }
-    return playlist;
-}
+const listaMusicas = document.getElementById('lista-musicas');
 
 let playlist = [
     {
@@ -29,77 +24,155 @@ let playlist = [
         capa: 'musicas/idiota.jfif'
     },
     {
-        titulo: 'Verão Cruel',
-        artista: 'Teilor Suifiti',
+        titulo: 'Me beija com raiva',
+        artista: 'Jão',
+        src: 'musicas/mebeijacomraiva.mp3',
+        capa: 'musicas/mebeijacomraiva.jpg'
+    },
+    {
+        titulo: 'Cruel Summer',
+        artista: 'Tailor Swift',
         src: 'musicas/cruelsummer.mp3',
         capa: 'musicas/lover.jpg'
     },
     {
-        titulo: 'Oruam 3',
-        artista: 'Oruam',
-        src: 'olhosvermelhos.mp3',
-        capa: 'capa2.jpg'
+        titulo: 'Taste',
+        artista: 'Sabrina Carpenter',
+        src: 'musicas/taste.mp3',
+        capa: 'musicas/please.jpg'
     },
     {
-        titulo: 'Dedos Vermelhos',
-        artista: 'Jão',
-        src: 'dedosvermelhos.mp3',
-        capa: 'capa2.jpg'
+        titulo: 'Espresso',
+        artista: 'Saprina Carpenter',
+        src: 'musicas/espresso.mp3',
+        capa: 'musicas/espresso.jpg'
+    },
+    {
+        titulo: 'Please Please Please',
+        artista: 'Saprina Carpenter',
+        src: 'musicas/please.mp3',
+        capa: 'musicas/please.jpg'
+    },
+    {
+        titulo: 'Nonsense',
+        artista: 'Saprina Carpenter',
+        src: 'musicas/nosense.mp3',
+        capa: 'musicas/nosense.jpg'
+    },
+    {
+        titulo: 'to bem',
+        artista: 'Jovem Dionisio',
+        src: 'musicas/mearrumei.mp3',
+        capa: 'musicas/tobem.jpg'
+    },
+    {
+        titulo: 'ACORDA PEDRINHO',
+        artista: 'Jovem Dionisio',
+        src: 'musicas/acordapedro.mp3',
+        capa: 'musicas/acordapedro.jpg'
+    },
+    {
+        titulo: 'Pontos de Exclamação',
+        artista: 'Jovem Dionisio',
+        src: 'musicas/!!!.mp3',
+        capa: 'musicas/!!!.jpg'
+    },
+    {
+        titulo: 'i like the way you kiss me',
+        artista: 'artemas',
+        src: 'musicas/iliketheway.mp3',
+        capa: 'musicas/ilike.jpg'
     },
 ];
 
-const listaMusicas = document.getElementById('lista-musicas');
+function obterDuracaoMusica(src) {
+    return new Promise((resolve) => {
+        const audioTemp = new Audio(src);
+        audioTemp.addEventListener('loadedmetadata', () => {
+            resolve(audioTemp.duration);
+        });
+    });
+}
+
+async function calcularTempoTotal(playlist) {
+    let tempoTotalSegundos = 0;
+    for (let i = 0; i < playlist.length; i++) {
+        const duracao = await obterDuracaoMusica(playlist[i].src);
+        tempoTotalSegundos += duracao;
+    }
+
+    const horas = Math.floor(tempoTotalSegundos / 3600);
+    const minutos = Math.floor((tempoTotalSegundos % 3600) / 60);
+
+    return { horas, minutos };
+}
+
+const infos = document.querySelector('.infos p:last-child');
+
+async function atualizarInfos() {
+    const tempoTotal = await calcularTempoTotal(playlist);
+    infos.textContent = `${playlist.length} músicas, ${tempoTotal.horas}h ${tempoTotal.minutos}min`;
+}
+
+atualizarInfos(); // Exibe as informações iniciais
+
+// Exemplo de como adicionar uma música à playlist
+async function adicionarMusica(musica) {
+    playlist.push(musica);
+    await atualizarInfos(); // Atualiza as informações após adicionar a música
+}
+
+// Exemplo de como remover uma música da playlist
+async function removerMusica(indice) {
+    playlist.splice(indice, 1);
+    await atualizarInfos(); // Atualiza as informações após remover a música
+}
 
 
-const musicPlayer = document.getElementById('music-player');
-const musicaAtual = document.getElementById('musica-atual');
-const playerCapa = document.getElementById('player-capa');
-const tituloMusica = document.getElementById('titulo-musica');
-const artistaMusica = document.getElementById('artista-musica');
-const btnPausar = document.getElementById('btn-pausar');
-const btnVoltar = document.getElementById('btn-voltar');
-const btnProximo = document.getElementById('btn-proximo');
-const btnAleatorio = document.getElementById('btn-aleatorio');
+let aleatorioAtivo = false;
 
-
-let musicaIndex = 0; // Índice da música atual
-let aleatorioAtivo = false; // Controle para o modo aleatório
-
-// Atualiza o player com a música
 function atualizarPlayer(musica) {
     tituloMusica.textContent = musica.titulo;
     artistaMusica.textContent = musica.artista;
     playerCapa.src = musica.capa;
 }
 
-// Função para tocar a música anterior
 function tocarMusicaAnterior() {
     musicaIndex = musicaIndex === 0 ? playlist.length - 1 : musicaIndex - 1;
     const musica = playlist[musicaIndex];
     atualizarPlayer(musica);
-    console.log("Tocando música anterior:", musica.titulo);
+    audio.src = musica.src;
+    audio.play();
 }
 
-// Função para tocar a próxima música
-function tocarProximaMusica() {
-    if (aleatorioAtivo) {
-        musicaIndex = Math.floor(Math.random() * playlist.length); // Índice aleatório
-    } else {
-        musicaIndex = (musicaIndex + 1) % playlist.length; // Próxima música
-    }
-    const musica = playlist[musicaIndex];
-    atualizarPlayer(musica);
-    console.log("Tocando próxima música:", musica.titulo);
-}
+let playlistEmbaralhada = []; // Inicialmente vazia
 
-// Função para ativar/desativar aleatório
 function alternarAleatorio() {
     aleatorioAtivo = !aleatorioAtivo;
     btnAleatorio.classList.toggle('active', aleatorioAtivo);
-    console.log("Modo aleatório:", aleatorioAtivo ? "Ativado" : "Desativado");
+
+    if (aleatorioAtivo) {
+        // Embaralha a playlist quando o modo aleatório é ativado
+        playlistEmbaralhada = [...playlist];
+        embaralharPlaylist(playlistEmbaralhada);
+        musicaIndex = 0; // Reinicia o índice para a primeira música embaralhada
+    }
 }
 
-// Adicionando o evento de clique para as músicas
+function tocarProximaMusica() {
+    if (aleatorioAtivo) {
+        // Modo aleatório ligado: toca a próxima música na ordem embaralhada
+        musicaIndex = (musicaIndex + 1) % playlistEmbaralhada.length;
+    } else {
+        // Modo aleatório desligado: toca a próxima música na ordem original
+        musicaIndex = (musicaIndex + 1) % playlist.length;
+    }
+    const musica = aleatorioAtivo ? playlistEmbaralhada[musicaIndex] : playlist[musicaIndex];
+    atualizarPlayer(musica);
+    audio.src = musica.src;
+    audio.play();
+}
+
 for (let i = 0; i < playlist.length; i++) {
     const musica = playlist[i];
     const itemLista = document.createElement('li');
@@ -127,7 +200,7 @@ for (let i = 0; i < playlist.length; i++) {
     itemLista.appendChild(textoContainer);
 
     const playIcon = document.createElement('i');
-    playIcon.classList.add('fas', 'fa-play'); // Classe para o ícone de play
+    playIcon.classList.add('fas', 'fa-play');
     playIcon.classList.add('play-icon');
     itemLista.appendChild(playIcon);
 
@@ -135,117 +208,37 @@ for (let i = 0; i < playlist.length; i++) {
         musicaIndex = i;
         const musica = playlist[musicaIndex];
         atualizarPlayer(musica);
+        audio.src = musica.src;
+        audio.play();
+
+        // Atualiza o ícone do botão de play/pause
+        btnPausar.innerHTML = '<span class="material-icons">pause</span>';
 
         musicPlayer.classList.remove('hidden');
-        setTimeout(() => musicPlayer.classList.add('visible'), 10); 
+        setTimeout(() => musicPlayer.classList.add('visible'), 10);
     });
 
     listaMusicas.appendChild(itemLista);
 }
 
-// Adicionando os eventos para os botões
 btnVoltar.addEventListener('click', tocarMusicaAnterior);
 btnProximo.addEventListener('click', tocarProximaMusica);
 btnAleatorio.addEventListener('click', alternarAleatorio);
 
-
-
-//let musicaIndex = 0;
-
-function carregarMusica(musica) {
-    audio.src = musica.src;
-    titulo.textContent = musica.titulo;
-    artista.textContent = musica.artista;
-    capa.src = musica.capa;
-}
-
-function tocarMusica() {
-    audio.play();
-    playBtn.textContent = 'Pause';
-}
-
-function pausarMusica() {
-    audio.pause();
-    playBtn.textContent = 'Play';
-}
-
-const aleatorioBtn = document.getElementById('aleatorio');
-let modoAleatorio = false;
-const musicasTocadasRecentemente = []; // Lista para armazenar as músicas tocadas recentemente
-const maxMusicasTocadasRecentemente = 2; // Número máximo de músicas na lista
-
-aleatorioBtn.addEventListener('click', () => {
-    modoAleatorio = !modoAleatorio;
-    if (modoAleatorio) {
-        aleatorioBtn.textContent = 'Aleatório (Ligado)';
-    } else {
-        aleatorioBtn.textContent = 'Aleatório (Desligado)';
-    }
-});
-
-function proximaMusica() {
-    if (modoAleatorio) {
-        // Modo aleatório ligado: toca uma música aleatória, evitando repetições recentes
-        let proximaIndex;
-        let tentativas = 0;
-        do {
-            proximaIndex = Math.floor(Math.random() * playlist.length);
-            tentativas++;
-            // Se tentou muitas vezes, toca uma música repetida
-            if (tentativas > playlist.length) {
-                proximaIndex = Math.floor(Math.random() * playlist.length);
-                break;
-            }
-        } while (musicasTocadasRecentemente.includes(proximaIndex) && musicasTocadasRecentemente.length < playlist.length);
-
-        musicaIndex = proximaIndex;
-
-        // Adiciona a música à lista de músicas tocadas recentemente
-        musicasTocadasRecentemente.push(musicaIndex);
-        if (musicasTocadasRecentemente.length > maxMusicasTocadasRecentemente) {
-            musicasTocadasRecentemente.shift(); // Remove a música mais antiga
-        }
-    } else {
-        // Modo aleatório desligado: toca a próxima música na ordem
-        musicaIndex = (musicaIndex + 1) % playlist.length;
-    }
-    carregarMusica(playlist[musicaIndex]);
-    tocarMusica();
-}
-
-function musicaAnterior() {
-    musicaIndex = (musicaIndex - 1 + playlist.length) % playlist.length;
-    carregarMusica(playlist[musicaIndex]);
-    tocarMusica();
-}
-
-function atualizarProgresso() {
-    progresso.value = audio.currentTime;
-}
-
-function musicaAleatoria(){
-    
-}
-
-audio.addEventListener('loadeddata', () => {
-    progresso.max = audio.duration;
-});
-
-audio.addEventListener('timeupdate', atualizarProgresso);
-
-progresso.addEventListener('input', () => {
-    audio.currentTime = progresso.value;
-});
-
-playBtn.addEventListener('click', () => {
+btnPausar.addEventListener('click', () => {
     if (audio.paused) {
-        tocarMusica();
+        audio.play();
+        btnPausar.innerHTML = '<span class="material-icons">pause</span>';
     } else {
-        pausarMusica();
+        audio.pause();
+        btnPausar.innerHTML = '<span class="material-icons">play_arrow</span>';
     }
 });
 
-proximaBtn.addEventListener('click', proximaMusica);
-anteriorBtn.addEventListener('click', musicaAnterior);
-
-carregarMusica(playlist[musicaIndex]);
+function embaralharPlaylist(playlist) {
+    for (let i = playlist.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [playlist[i], playlist[j]] = [playlist[j], playlist[i]];
+    }
+    return playlist;
+}

@@ -27,14 +27,14 @@
 
 
 body {
-    
-    background: linear-gradient(0deg, rgba(59,142,250,1) 52%, rgba(42,99,173,1) 100%);
+
+    background: linear-gradient(0deg, rgba(59, 142, 250, 1) 52%, rgba(42, 99, 173, 1) 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px;
-    
+
 }
 
 img.capa {
@@ -53,7 +53,7 @@ main {
     width: 100%;
     max-width: 720px;
     border-radius: 5px;
-    color:aliceblue;
+    color: aliceblue;
 }
 
 div.header-main {
@@ -62,6 +62,7 @@ div.header-main {
     align-items: center;
     justify-content: center;
 }
+
 div.texto-header {
     display: flex;
     flex-direction: column;
@@ -84,7 +85,7 @@ div.infos {
     font-size: 0.8em;
     font-family: 'Musicas', sans-serif;
     color: rgba(240, 248, 255, 0.795);
-    
+
 }
 
 #lista-musicas ul {
@@ -109,24 +110,30 @@ div.infos {
 }
 
 #lista-musicas li:hover {
-    background-color: #07346e; /* Muda a cor ao passar o mouse */
+    background-color: #07346e;
+    /* Muda a cor ao passar o mouse */
 }
 
 .play-icon {
-    font-size: 20px; /* Tamanho do ícone */
-    color: aliceblue; /* Cor do ícone */
+    font-size: 20px;
+    /* Tamanho do ícone */
+    color: aliceblue;
+    /* Cor do ícone */
     cursor: pointer;
-    margin-left: auto; /* Torna o ícone clicável */
+    margin-left: auto;
+    /* Torna o ícone clicável */
 }
 
 /* Efeito de hover no ícone de play */
 .play-icon:hover {
-    color: #0984e3; /* Cor ao passar o mouse */
+    color: #0984e3;
+    /* Cor ao passar o mouse */
 }
 
 .texto-musica {
     display: flex;
-    flex-direction: column; /* Deixa o título e artista um abaixo do outro */
+    flex-direction: column;
+    /* Deixa o título e artista um abaixo do outro */
 }
 
 .titulo-musica {
@@ -164,12 +171,14 @@ div.infos {
     align-items: center;
     padding: 10px 20px;
     transition: transform 0.3s ease-in-out;
-    transform: translateY(100%); /* Esconde a aba */
+    transform: translateY(100%);
+    /* Esconde a aba */
     font-family: 'Musicas', sans-serif;
 }
 
 #music-player.visible {
-    transform: translateY(0); /* Mostra a aba */
+    transform: translateY(0);
+    /* Mostra a aba */
 }
 
 #player-capa {
@@ -178,6 +187,7 @@ div.infos {
     height: 50px;
     border-radius: 5px;
 }
+
 #musica-atual {
     margin-left: 15px;
 }
@@ -214,12 +224,14 @@ button:hover {
 }
 
 .material-icons {
-    font-size: inherit;  /* Faz com que os ícones herdem o tamanho do botão */
-  }
+    font-size: inherit;
+    /* Faz com que os ícones herdem o tamanho do botão */
+}
 
 
 #btn-aleatorio.active {
-    background-color: rgb(50, 123, 218); /* Cor diferente para indicar que o aleatório está ativado */
+    background-color: rgb(50, 123, 218);
+    /* Cor diferente para indicar que o aleatório está ativado */
 }
 
 .hidden {
@@ -229,19 +241,23 @@ button:hover {
 
 /* Adicionando margem para os botões para que eles não fiquem sobrepostos */
 #btn-voltar {
-    right: 120px; /* Ajuste para o lado direito */
+    right: 120px;
+    /* Ajuste para o lado direito */
 }
 
 #btn-pausar {
-    right: 80px; /* Ajuste para o lado direito */
+    right: 80px;
+    /* Ajuste para o lado direito */
 }
 
 #btn-proximo {
-    right: 40px; /* Ajuste para o lado direito */
+    right: 40px;
+    /* Ajuste para o lado direito */
 }
 
 #btn-aleatorio {
-    right: 0px; /* Ajuste para o lado direito */
+    right: 0px;
+    /* Ajuste para o lado direito */
 }
 
 @media (min-width: 768px) {
@@ -256,59 +272,73 @@ button:hover {
         display: flex;
         flex-direction: row;
     }
+
     div.texto-header {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
     }
-    
+
     #lista-musicas li {
         width: 700px;
     }
 
     #music-player {
         display: flex;
-        align-items: center;  /* Centraliza verticalmente os itens dentro do player */
-        justify-content: center;  /* Espalha os itens na largura disponível */
-        padding: 15px;  /* Adiciona um espaçamento ao redor do player */
-        height: 100px;  /* Define a altura do player */
+        align-items: center;
+        /* Centraliza verticalmente os itens dentro do player */
+        justify-content: center;
+        /* Espalha os itens na largura disponível */
+        padding: 15px;
+        /* Adiciona um espaçamento ao redor do player */
+        height: 100px;
+        /* Define a altura do player */
         gap: 30px;
-      }
-      
-      
-      
-      #titulo-musica {
-        font-size: 1.5em;  /* Tamanho da fonte para o título da música */
-        margin: 0;  /* Remove margens extras */
-      }
-      
-      #artista-musica {
-        font-size: 1.1em;  /* Tamanho da fonte para o nome do artista */
-        margin: 0;  /* Remove margens extras */
-      }
-      
-      .container-botoes {
+    }
+
+
+
+    #titulo-musica {
+        font-size: 1.5em;
+        /* Tamanho da fonte para o título da música */
+        margin: 0;
+        /* Remove margens extras */
+    }
+
+    #artista-musica {
+        font-size: 1.1em;
+        /* Tamanho da fonte para o nome do artista */
+        margin: 0;
+        /* Remove margens extras */
+    }
+
+    .container-botoes {
         display: flex;
-        justify-content: space-between;  /* Distribui os botões igualmente */
-        align-items: center;  /* Alinha os botões verticalmente */
-        width: 180px;  /* Define uma largura para a seção dos botões */
+        justify-content: space-between;
+        /* Distribui os botões igualmente */
+        align-items: center;
+        /* Alinha os botões verticalmente */
+        width: 180px;
+        /* Define uma largura para a seção dos botões */
         margin-left: 0%;
-      }
-      
-      button {
+    }
+
+    button {
         background: none;
         border: none;
-        font-size: 24px;  /* Tamanho dos ícones */
+        font-size: 24px;
+        /* Tamanho dos ícones */
         cursor: pointer;
-      }
-      
-      button:hover {
-        opacity: 0.8;  /* Adiciona efeito ao passar o mouse sobre os botões */
-      }
-      
-      
+    }
 
-      
+    button:hover {
+        opacity: 0.8;
+        /* Adiciona efeito ao passar o mouse sobre os botões */
+    }
+
+
+
+
 }
 
 @media (min-width: 1024px) {
